@@ -5,7 +5,7 @@ import Settings from './pages/Settings'
 import SignIn from './pages/SignIn'
 import SignUp from './pages/SignUp'
 
-import './App.css'
+import './App.scss'
 
 function App() {
     return (
