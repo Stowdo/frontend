@@ -1,0 +1,11 @@
+@import '../styles/main';
+
+.AccountLogo {
+    width: 40px;
+    height: 40px;
+    fill: $color-foreground-light;
+
+    &:hover {
+        cursor: pointer;
+    }
+}
