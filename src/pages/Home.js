@@ -1,8 +1,13 @@
 import React from 'react'
 
+import StaticHeader from '../shared/StaticHeader'
+
 function Home() {
     return (
-        <h1>Home</h1>
+        <div className='Home'>
+            <StaticHeader />
+            <h1>Home</h1>
+        </div>
     )
 }
 
