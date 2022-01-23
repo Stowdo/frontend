@@ -2,14 +2,36 @@ import React from 'react'
 
 import StaticHeader from '../shared/StaticHeader'
 import FileTree from '../shared/FileTree'
+import FileList from '../shared/FileList'
 
 
 function Home() {
+    let files = [
+        {
+            isFolder: true,
+            name: 'Homework',
+            size: '1.2 MB',
+            date: '1st january 2017'
+        },
+        {
+            isFolder: true,
+            name: 'Tests',
+            size: '1.2 MB',
+            date: '1st january 2017'
+        },
+        {
+            isFolder: false,
+            name: 'my powerpoint.pptx',
+            size: '1.2 MB',
+            date: '1st january 2017'
+        }
+    ]
+
     return (
         <div>
             <StaticHeader />
             <FileTree />
-            <h1>Home</h1>
+            <FileList files={files} />
         </div>
     )
 }

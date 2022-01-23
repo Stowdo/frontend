@@ -1,0 +1,39 @@
+@import '../styles/main';
+
+.FileListItem {
+    transition-duration: $transition-factor;
+
+    * {
+        padding: 5px 0;
+        vertical-align: middle;
+    }
+
+    &__icon {
+        padding-left: 10px;
+        width: 40px;
+
+        > * {
+            width: 30px;
+            height: 30px;
+            fill: $color-foreground-dark;
+        }
+    }
+
+    &__text {
+        font-size: 1.2em;
+        color: $color-foreground-dark;
+    }
+
+    &__meta {
+        text-align: right;
+    }
+
+    &__date {
+        padding-right: 10px;
+    }
+
+    &:hover {
+        background-color: rgba(0, 0, 0, 0.1);
+        cursor: pointer;
+    }
+}

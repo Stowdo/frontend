@@ -1,0 +1,12 @@
+@import '../styles/main';
+
+.FileList {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+
+    &__inner {
+        width: 90%;
+        table-layout: fixed;
+    }
+}
