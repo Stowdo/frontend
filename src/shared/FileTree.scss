@@ -1,0 +1,31 @@
+@import '../styles/main';
+
+.FileTree {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    &__inner {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: $color-secondary;
+        padding: 10px 50px;
+        border-radius: 0 0 100px 100px;
+    }
+
+    &__icon {
+        fill: $color-foreground-dark;
+        margin-right: 20px;
+    }
+
+    &__separator {
+        fill: $color-foreground-dark;
+        margin: 0 10px;
+    }
+
+    &__path {
+        color: $color-foreground-dark;
+        font-size: 1.2em;
+    }
+}
