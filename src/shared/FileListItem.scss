@@ -9,8 +9,9 @@
     }
 
     &__icon {
-        padding-left: 10px;
+        padding-left: 15px;
         width: 40px;
+        border-radius: 100px 0 0 100px;
 
         > * {
             width: 30px;
@@ -29,7 +30,8 @@
     }
 
     &__date {
-        padding-right: 10px;
+        padding-right: 15px;
+        border-radius: 0 100px 100px 0;
     }
 
     &:hover {
