@@ -5,6 +5,7 @@
     padding: 10px 30px;
     border-radius: 0 0 30px 30px;
     box-shadow: $shadow-primary;
+    position: sticky;
 
     &__inner {
         color: $color-foreground-light;
@@ -14,6 +15,7 @@
 
         h1 {
             font-size: 2em;
+            margin: 10px 0;
         }
     }
 

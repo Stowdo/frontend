@@ -30,7 +30,7 @@ function Home() {
 
     return (
         <div>
-            <StaticHeader />
+            <StaticHeader withActions={true} withSettings={true} />
             <FileTree />
             <FileList files={files} />
             <UploadBar />
