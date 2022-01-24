@@ -1,8 +1,9 @@
 $color-primary: #B7ADF8;
-$color-secondary: transparentize($color-primary, 0.9);
+$color-secondary: #F1EFFE;
 $color-foreground-light: #FFFFFF;
 $color-foreground-dark: #626262;
 
 $shadow-primary: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
+$shadow-secondary: 0 4px 4px 0 rgba(0, 0, 0, 0.1);
 
 $transition-factor: 0.1s;

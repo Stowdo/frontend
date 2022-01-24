@@ -1,11 +1,13 @@
 @import '../styles/main';
 
 .AccountLogo {
+    fill: $color-foreground-light;
     width: 40px;
     height: 40px;
-    fill: $color-foreground-light;
+    transition-duration: $transition-factor * 2;
 
     &:hover {
         cursor: pointer;
+        fill: darken($color-foreground-light, 10%);
     }
 }

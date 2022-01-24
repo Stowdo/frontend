@@ -3,7 +3,6 @@ import React from 'react'
 import StaticHeader from '../shared/StaticHeader'
 import FileTree from '../shared/FileTree'
 import FileList from '../shared/FileList'
-import ActionBar from '../shared/ActionBar'
 
 
 function Home() {
@@ -33,7 +32,6 @@ function Home() {
             <StaticHeader />
             <FileTree />
             <FileList files={files} />
-            <ActionBar />
         </div>
     )
 }

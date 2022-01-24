@@ -2,7 +2,7 @@
 
 .StaticHeader {
     background-color: $color-primary;
-    padding: 20px 25px;
+    padding: 10px 30px;
     border-radius: 0 0 30px 30px;
     box-shadow: $shadow-primary;
 
@@ -15,5 +15,10 @@
         h1 {
             font-size: 2em;
         }
+    }
+
+    &__actions {
+        display: flex;
+        align-items: center;
     }
 }
