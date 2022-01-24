@@ -1,0 +1,61 @@
+@use 'sass:math';
+@import '../styles/main';
+
+$icon-size: 40px;
+$button-padding: 20px;
+$label-offset: $button-padding + math.div($icon-size, 2);
+
+.UploadBar {
+    display: flex;
+    align-items: center;
+    margin-left: - $label-offset;
+
+    &__container {
+        position: fixed;
+        bottom: 15%;
+        right: 7%;
+        transition-duration: $transition-factor * 2;
+
+        &:hover {
+            cursor: pointer;
+            transform: scale(115%);
+            
+            .UploadBar {
+                &__label {
+                    background-color: darken($color-secondary, 4%);
+                }
+
+                &__button {
+                    background-color: darken($color-primary, 10%);
+                }
+            }
+        }
+    }
+
+    &__label {
+        position: relative;
+        left: $label-offset;
+        background-color: $color-secondary;
+        color: $color-foreground-dark;
+        font-family: 'Nunito Medium';
+        font-size: 1.2em;
+        padding: 16px ($label-offset + 20px) 14px 40px;
+        border-radius: 100px 0 0 100px;
+        z-index: 0;
+        box-shadow: $shadow-primary;
+        user-select: none;
+        transition-duration: $transition-factor * 2;
+    }
+
+    &__button {
+        fill: $color-foreground-light;
+        background-color: $color-primary;
+        padding: $button-padding;
+        width: $icon-size;
+        height: $icon-size;
+        border-radius: 100px;
+        z-index: 1;
+        box-shadow: $shadow-primary;
+        transition-duration: $transition-factor * 2;
+    }
+}

@@ -3,6 +3,7 @@ import React from 'react'
 import StaticHeader from '../shared/StaticHeader'
 import FileTree from '../shared/FileTree'
 import FileList from '../shared/FileList'
+import UploadBar from '../shared/UploadBar'
 
 
 function Home() {
@@ -32,6 +33,7 @@ function Home() {
             <StaticHeader />
             <FileTree />
             <FileList files={files} />
+            <UploadBar />
         </div>
     )
 }
