@@ -9,7 +9,9 @@ function FileList(props) {
     return (
         <div className='FileList'>
             <table className='FileList__inner'>
-                {props.files.map((file, index) => <FileListItem key={index} {...file} />)}
+                <tbody>
+                    {props.files.map((file, index) => <FileListItem key={index} {...file} />)}
+                </tbody>
             </table>
         </div>
     )
