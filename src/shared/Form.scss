@@ -4,7 +4,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin: 60px 0;
+    margin: 80px 0;
 
     &__title {
         font-size: 2em;
@@ -16,5 +16,14 @@
     &__fields {
         display: flex;
         flex-direction: column;
+        margin-bottom: 40px;
+    }
+
+    &__buttons {
+        display: flex;
+
+        > * {
+            margin: 0 30px;
+        }
     }
 }

@@ -1,0 +1,43 @@
+@import '../styles/main';
+
+.Button {
+    box-sizing: border-box;
+    color: $color-foreground-light;
+    background-color: $color-primary;
+    padding: 16px 40px 14px 40px;
+    border-radius: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.3em;
+    font-family: 'Nunito Medium';
+    border: none;
+    transition-duration: $transition-factor * 2;
+
+    &:hover {
+        cursor: pointer;
+        background-color: lighten($color-primary, 5%);
+    }
+
+    &--secondary {
+        border: 2px solid $color-primary;
+        color: $color-primary;
+        background-color: transparent;
+
+        &:hover {
+            background-color: rgba(0, 0, 0, 0.1);
+        }
+    }
+
+    &--disabled {
+        opacity: 0.5;
+
+        &:hover {
+            cursor: not-allowed;
+        }
+    }
+
+    &:focus {
+        transform: scale(110%);
+    }
+}

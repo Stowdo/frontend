@@ -1,9 +1,10 @@
-import React from "react"
+import React from 'react'
 import StaticHeader from '../shared/StaticHeader'
 
 import Form from '../shared/Form'
 import FormField from '../shared/FormField'
 import FormInput from '../shared/FormInput'
+import Button from '../shared/Button'
 
 
 function Settings() {
@@ -81,6 +82,22 @@ function Settings() {
                         />}
                     />
                 ]}
+                buttons={[
+                    <Button
+                        key='save'
+                        text='Save'
+                        onClick={() => {}}
+                        disabled={false}
+                        secondary={false}
+                    />,
+                    <Button
+                        key='cancel'
+                        text='Cancel'
+                        onClick={() => {}}
+                        disabled={false}
+                        secondary={true}
+                    />
+                ]}
             />
             <Form
                 title='Password settings'
@@ -114,11 +131,40 @@ function Settings() {
                         />}
                     />
                 ]}
+                buttons={[
+                    <Button
+                        key='save'
+                        text='Save'
+                        onClick={() => {}}
+                        disabled={false}
+                        secondary={false}
+                    />,
+                    <Button
+                        key='cancel'
+                        text='Cancel'
+                        onClick={() => {}}
+                        disabled={false}
+                        secondary={true}
+                    />
+                ]}
             />
             <Form
                 title='Danger zone'
-                fields={[
-                    
+                buttons={[
+                    <Button
+                        key='delete'
+                        text='Delete this account'
+                        onClick={() => {}}
+                        disabled={false}
+                        secondary={false}
+                    />,
+                    <Button
+                        key='reset'
+                        text='Reset storage'
+                        onClick={() => {}}
+                        disabled={false}
+                        secondary={true}
+                    />
                 ]}
             />
         </div>
