@@ -1,0 +1,18 @@
+@import '../styles/main';
+
+.FormField {
+    display: flex;
+    align-items: baseline;
+    margin: 10px 0;
+
+    > * {
+        flex: 1;
+    }
+
+    &__label {
+        text-align: right;
+        color: $color-foreground-dark;
+        font-size: 1.2em;
+        margin-right: 20px;
+    }
+}

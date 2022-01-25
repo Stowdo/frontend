@@ -101,3 +101,10 @@ hr {
 input, select {
     vertical-align: middle;
 }
+
+input, select, textarea, button {
+    font-family: 'Nunito Light';
+    &:focus {
+        outline-color: $color-primary;
+    }
+}

@@ -1,0 +1,10 @@
+@import '../styles/main';
+
+.FormInput {
+    border: none;
+    border-bottom: 1px solid $color-foreground-dark;
+    text-align: center;
+    color: $color-foreground-dark;
+    font-size: 1.2em;
+    min-width: 300px;
+}
