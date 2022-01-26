@@ -2,7 +2,7 @@ import React from 'react'
 
 import './Button.scss'
 
-function Button({ text, onClick, disabled=false, secondary=false }) {
+function Button({ children, onClick, disabled=false, secondary=false }) {
     return (
         <button
             className={'Button'
@@ -14,7 +14,7 @@ function Button({ text, onClick, disabled=false, secondary=false }) {
                     onClick(event)
                 }
             }}>
-            {text}
+            {children}
         </button>
     )
 }

@@ -1,0 +1,19 @@
+@import '../styles/main';
+
+.ButtonWithIcon {
+    &__icon {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding-left: 10px;
+        margin-right: -10px;
+
+        > * {
+            fill: $color-foreground-light;
+        }
+
+        &--secondary > * {
+            fill: $color-primary;
+        }
+    }
+}
