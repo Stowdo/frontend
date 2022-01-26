@@ -107,6 +107,6 @@ input, select {
 input, select, textarea, button {
     font-family: 'Nunito Light';
     &:focus {
-        outline-color: $color-primary;
+        outline: none;
     }
 }

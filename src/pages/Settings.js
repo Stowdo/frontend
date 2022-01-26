@@ -21,7 +21,7 @@ function Settings() {
 
     return (
         <div className="Settings">
-            <StaticHeader withSettings={true} />
+            <StaticHeader withClose={true} />
             <Form
                 title='User settings'
                 fields={[

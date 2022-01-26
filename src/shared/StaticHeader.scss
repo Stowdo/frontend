@@ -8,12 +8,12 @@
     position: sticky;
 
     &__inner {
-        color: $color-foreground-light;
         display: flex;
         justify-content: space-between;
         align-items: center;
 
         h1 {
+            color: $color-foreground-light;
             font-size: 2em;
             margin: 10px 0;
         }
@@ -22,5 +22,17 @@
     &__actions {
         display: flex;
         align-items: center;
+    }
+
+    &__icon {
+        fill: $color-foreground-light;
+        width: 30px;
+        height: 30px;
+        transition-duration: $transition-factor * 2;
+
+        &:hover {
+            cursor: pointer;
+            fill: darken($color-foreground-light, 10%);
+        }
     }
 }

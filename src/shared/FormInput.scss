@@ -1,10 +1,22 @@
 @import '../styles/main';
 
 .FormInput {
+    box-sizing: border-box;
     border: none;
     border-bottom: 1px solid $color-foreground-dark;
     text-align: center;
     color: $color-foreground-dark;
     font-size: 1.2em;
     min-width: 300px;
+    padding-bottom: 1px;
+
+    &:focus {
+        border-color: $color-primary;
+        border-width: 2px;
+        padding-bottom: initial;
+
+        &::placeholder {
+            color: $color-primary;
+        }
+    }
 }

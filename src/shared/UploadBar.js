@@ -7,7 +7,7 @@ import './UploadBar.scss'
 
 function UploadBar() {
     return (
-        <div className='UploadBar__container'>
+        <div className='UploadBar__container' title='Upload'>
             <div className='UploadBar'>
                 <p className='UploadBar__label'>Upload</p>
                 <UploadIcon className='UploadBar__button' />

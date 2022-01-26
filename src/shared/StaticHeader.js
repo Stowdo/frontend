@@ -1,23 +1,45 @@
 import React from 'react'
+import { useNavigate } from 'react-router-dom'
 
-import AccountLogo from './AccountLogo'
 import ActionBar from './ActionBar'
+import { ReactComponent as SettingsIcon } from '../shapes/settings.svg'
+import { ReactComponent as CloseIcon } from '../shapes/close.svg'
+
 import './StaticHeader.scss'
 
-function StaticHeader(props) {
+
+function StaticHeader({ withActions=false, withSettings=false, withClose=false }) {
+    const navigate = useNavigate()
+
+    const handleSettingsClick = () => {
+        navigate('/settings')
+    }
+
+    const handleCloseClick = () => {
+        navigate('/')
+    }
+
     return (
         <div className='StaticHeader'>
             <div className='StaticHeader__inner'>
-                <h1>Stowdo</h1>
-                {props.withActions || props.withSettings
+                <a href='/'><h1>Stowdo</h1></a>
+                {withActions || withSettings || withClose
                 ?   <div className='StaticHeader__actions'>
-                        {props.withActions
+                        {withActions
                         ?   <ActionBar />
                         :   React.null
                         }
-                        {props.withSettings
-                        ?   <AccountLogo className='StaticHeader__account' />
-                        :   React.null
+                        {withClose
+                        ?   <CloseIcon
+                                className='StaticHeader__icon'
+                                onClick={handleCloseClick}
+                            />
+                        :   withSettings
+                            ?   <SettingsIcon
+                                    className='StaticHeader__icon'
+                                    onClick={handleSettingsClick}
+                                />
+                            :       React.null
                         }
                     </div>
                 :   React.null
