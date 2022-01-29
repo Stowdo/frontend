@@ -6,6 +6,8 @@ import FormField from '../shared/FormField'
 import FormInput from '../shared/FormInput'
 import ButtonWithIcon from '../shared/ButtonWithIcon'
 import { ReactComponent as NextIcon } from '../shapes/next.svg'
+import { registerUser } from '../api/user'
+import { useNavigate } from 'react-router-dom'
 
 
 function SignUp() {
@@ -15,6 +17,18 @@ function SignUp() {
         password: '',
         confirm: '',
     })
+    const navigate = useNavigate()
+
+    const handleSubmit = async () => {
+        registerUser(
+            formData.username,
+            formData.email,
+            formData.password,
+            formData.confirm
+        )
+        navigate('/signin')
+    }
+
     return (
         <div className="SignUp">
             <StaticHeader />
@@ -82,7 +96,7 @@ function SignUp() {
                 ]}
                 sendButton={
                     <ButtonWithIcon
-                        onClick={() => {}}
+                        onClick={handleSubmit}
                         icon={<NextIcon />}
                     >
                         Let's go

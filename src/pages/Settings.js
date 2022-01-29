@@ -5,6 +5,7 @@ import Form from '../shared/Form'
 import FormField from '../shared/FormField'
 import FormInput from '../shared/FormInput'
 import Button from '../shared/Button'
+import { readUser, updateUser } from '../api/user'
 
 
 function Settings() {
@@ -18,6 +19,24 @@ function Settings() {
         password: '',
         confirm: ''
     })
+
+    const handleSubmitUser = async () => {
+        await updateUser(user.username, user.firstname, user.lastname)
+    }
+
+    const loadUser = async () => {
+        const { username, email, first_name, last_name } = await readUser()
+        setUser({
+            username: username,
+            email: email,
+            firstname: first_name,
+            lastname: last_name
+        })
+    }
+
+    React.useEffect(() => {
+        loadUser()
+    }, [])
 
     return (
         <div className="Settings">
@@ -85,7 +104,7 @@ function Settings() {
                 sendButton={
                     <Button
                         key='save'
-                        onClick={() => {}}
+                        onClick={handleSubmitUser}
                         disabled={false}
                         secondary={false}
                     >
@@ -95,7 +114,7 @@ function Settings() {
                 cancelButton={
                     <Button
                         key='cancel'
-                        onClick={() => {}}
+                        onClick={loadUser}
                         disabled={false}
                         secondary={true}
                     >

@@ -1,16 +1,30 @@
 import React from 'react'
+
 import Form from '../shared/Form'
 import FormField from '../shared/FormField'
 import FormInput from '../shared/FormInput'
 import StaticHeader from '../shared/StaticHeader'
-import { ReactComponent as NextIcon } from '../shapes/next.svg'
 import ButtonWithIcon from '../shared/ButtonWithIcon'
+import { ReactComponent as NextIcon } from '../shapes/next.svg'
+import { setToken } from '../utils'
+import { loginUser } from '../api/user'
+import { useNavigate } from 'react-router-dom'
 
-function SignIn() {
-    let [formData, setFormData] = React.useState({
+
+export default function SignIn({ next='/' }) {
+    const [formData, setFormData] = React.useState({
         username: '',
         password: ''
     })
+    const navigate = useNavigate()
+
+    const handleSubmit = async event => {
+        event.preventDefault()
+        const token = await loginUser(formData.username, formData.password)
+        setToken(token)
+        navigate(next, { replace: true })
+    }
+
     return (
         <div className='SignIn'>
             <StaticHeader />
@@ -49,7 +63,7 @@ function SignIn() {
                 ]}
                 sendButton={
                     <ButtonWithIcon
-                        onClick={() => {}}
+                        onClick={handleSubmit}
                         icon={<NextIcon />}
                     >
                         Let's go
@@ -59,5 +73,3 @@ function SignIn() {
         </div>
     )
 }
-
-export default SignIn

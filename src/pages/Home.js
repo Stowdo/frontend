@@ -5,37 +5,34 @@ import FileTree from '../shared/FileTree'
 import FileList from '../shared/FileList'
 import UploadBar from '../shared/UploadBar'
 
+import { readFolders } from '../api/folder'
+import { createFile, readFiles } from '../api/file'
 
-function Home() {
-    let files = [
-        {
-            isFolder: true,
-            name: 'Homework',
-            size: '1.2 MB',
-            date: '1st january 2017'
-        },
-        {
-            isFolder: true,
-            name: 'Tests',
-            size: '1.2 MB',
-            date: '1st january 2017'
-        },
-        {
-            isFolder: false,
-            name: 'my powerpoint.pptx',
-            size: '1.2 MB',
-            date: '1st january 2017'
-        }
-    ]
+
+export default function Home() {
+    const [files, setFiles] = React.useState([])
+    const [folders, setFolders] = React.useState([])
+    const [path, setPath] = React.useState(null)
+
+    const loadResources = async () => {
+        setFolders(await readFolders(path))
+        setFiles(await readFiles(path))
+    }
+
+    const handleUpload = async event => {
+        await createFile(event.target.files[0])
+    }
+
+    React.useEffect(() => {
+        loadResources()
+    }, [])
 
     return (
         <div>
             <StaticHeader withActions={true} withSettings={true} />
             <FileTree />
-            <FileList files={files} />
-            <UploadBar />
+            <FileList files={folders.concat(files)} />
+            <UploadBar onUsed={handleUpload} />
         </div>
     )
 }
-
-export default Home

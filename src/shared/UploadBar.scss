@@ -57,4 +57,8 @@ $label-offset: $button-padding + math.div($icon-size, 2);
         box-shadow: $shadow-primary;
         transition-duration: $transition-factor * 2;
     }
+
+    &__input {
+        display: none;
+    }
 }
