@@ -6,8 +6,8 @@ import FileList from '../shared/FileList'
 import UploadBar from '../shared/UploadBar'
 import InputDialog from '../shared/InputDialog'
 
-import { createFolder, deleteFolder, readFolders, updateFolder } from '../api/folder'
-import { createFile, deleteFile, downloadFile, readFiles, updateFile } from '../api/file'
+import { createFolder, deleteFolder, downloadFolder, downloadFolders, readFolders, updateFolder } from '../api/folder'
+import { createFile, deleteFile, downloadFile, downloadFiles, readFiles, updateFile } from '../api/file'
 import { downloadResources } from '../api/resource'
 
 
@@ -20,7 +20,6 @@ export default function Home() {
     const [files, setFiles] = React.useState([])
     const [folders, setFolders] = React.useState([])
     const [currentFolder, setCurrentFolder] = React.useState(null)
-    const [newFolderDialog, openNewFolderDialog] = React.useState(false)
     const [clipboard, setClipboard] = React.useState({
         files: [],
         folders: []
@@ -57,13 +56,25 @@ export default function Home() {
         const selectedFolders = getSelectedResources(folders)
         const selectedFiles = getSelectedResources(files)
 
-        if (selectedFolders.length || selectedFiles.length > 1) {
+        if (selectedFolders.length && selectedFiles.length) {
             await downloadResources(
                 selectedFolders.map(folder => folder.pk),
-                selectedFiles.map(file => file.pk)
+                selectedFiles.map(file => file.pk),
             )
-        } else {
-            await downloadFile(selectedFiles[0].pk)
+        } else if (selectedFolders.length) {
+            if (selectedFolders.length === 1) {
+                await downloadFolder(selectedFolders[0].pk)
+            } else {
+                await downloadFolders(selectedFolders.map(folder => folder.pk))
+            }
+        } else if (selectedFiles.length) {
+            if (selectedFiles.length === 1) {
+                await downloadFile(selectedFiles[0].pk)
+            } else {
+                await downloadFiles(
+                    selectedFiles.map(file => file.pk),
+                )
+            }
         }
     }
 

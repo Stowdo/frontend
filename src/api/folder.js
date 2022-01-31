@@ -1,4 +1,4 @@
-import { api_url, getEndpoint, updateEndpoint } from '../utils'
+import { api_url, downloadEndpoint, getEndpoint, updateEndpoint } from '../utils'
 
 // list
 export async function readFolders(parent_folder='') {
@@ -32,4 +32,16 @@ export async function updateFolder(pk, name, deleted, parent_folder) {
 export async function deleteFolder(pk) {
     const url = api_url + `/storage/folders/${pk}/`
     return await updateEndpoint(url, 'delete', {})
+}
+
+// download
+export async function downloadFolder(pk) {
+    const url = api_url + `/storage/folders/${pk}/download/`
+    await downloadEndpoint(url, 'get', {})
+}
+
+export async function downloadFolders(pks) {
+    const url = api_url + '/storage/folders/download/'
+    const body = { folders: pks }
+    await downloadEndpoint(url, 'post', body)
 }

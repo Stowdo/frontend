@@ -46,3 +46,35 @@ export async function updateEndpoint(url, method, body) {
     })
     return response.data
 }
+
+export async function downloadEndpoint(url, method, body) {
+    let request = {
+        method: method,
+        url: url,
+        data: body,
+        responseType: 'blob',
+        withCredentials: true
+    }
+    
+    if (['post', 'put', 'patch', 'delete'].includes(method)) {
+        request.headers = {
+            'X-CSRFToken': Cookies.get('csrftoken')
+        }
+    }
+    const response = await axios(request)
+    const dispositions = response.headers['content-disposition']
+        .split(/\s*;\s*/)
+        .reduce((obj, disposition) => {
+            const [key, value] = disposition.split('=')
+            obj[key] = (typeof value === 'string' ? value.replace(/['"]+/g, '') : value)
+            return obj
+        },
+        {})
+    const filename = dispositions['filename']
+    const downloadUrl = window.URL.createObjectURL(new Blob([response.data]))
+    const link = document.createElement('a')
+
+    link.href = downloadUrl
+    link.setAttribute('download', filename)
+    link.click()
+}
