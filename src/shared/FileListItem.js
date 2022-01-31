@@ -4,6 +4,7 @@ import { ReactComponent as FolderIcon } from '../shapes/folder.svg'
 import { ReactComponent as FileIcon } from '../shapes/file.svg'
 
 import './FileListItem.scss'
+import { humanDateTime, humanFileSize } from '../utils'
 
 
 function FileListItem({ name, size, date, isFolder, onSelect, onOpen=() => {} }) {
@@ -26,10 +27,10 @@ function FileListItem({ name, size, date, isFolder, onSelect, onOpen=() => {} })
                 <p>{name}</p>
             </td>
             <td className='FileListItem__meta FileListItem__text'>
-                <p>{size}</p>
+                <p>{humanFileSize(size)}</p>
             </td>
             <td className='FileListItem__meta FileListItem__text FileListItem__date'>
-                <p>{date}</p>
+                <p>{humanDateTime(date)}</p>
             </td>
         </tr>
     )
