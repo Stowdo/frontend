@@ -121,6 +121,7 @@ function Settings() {
                         Cancel
                     </Button>
                 }
+                isSection={true}
             />
             <Form
                 title='Password settings'
@@ -174,6 +175,7 @@ function Settings() {
                         Cancel
                     </Button>
                 }
+                isSection={true}
             />
             <Form
                 title='Danger zone'
@@ -197,6 +199,7 @@ function Settings() {
                         Reset storage
                     </Button>
                 }
+                isSection={true}
             />
         </div>
     )

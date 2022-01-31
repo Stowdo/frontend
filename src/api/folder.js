@@ -8,9 +8,9 @@ export async function readFolders(parent_folder='') {
 
 // details
 export async function createFolder(name, parent_folder) {
-    const url = api_url + '/storage/files/'
+    const url = api_url + '/storage/folders/'
     const body = { name: name, parent_folder: parent_folder }
-    return await getEndpoint(url, 'post', body)
+    return await updateEndpoint(url, 'post', body)
 }
 
 
@@ -30,6 +30,6 @@ export async function updateFolder(pk, name, deleted, parent_folder) {
 }
 
 export async function deleteFolder(pk) {
-    const url = api_url + `/storage/folder/${pk}/`
+    const url = api_url + `/storage/folders/${pk}/`
     return await updateEndpoint(url, 'delete', {})
 }

@@ -4,8 +4,9 @@ import StaticHeader from '../shared/StaticHeader'
 import FileTree from '../shared/FileTree'
 import FileList from '../shared/FileList'
 import UploadBar from '../shared/UploadBar'
+import InputDialog from '../shared/InputDialog'
 
-import { readFolders, updateFolder } from '../api/folder'
+import { createFolder, deleteFolder, readFolders, updateFolder } from '../api/folder'
 import { createFile, deleteFile, downloadFile, readFiles, updateFile } from '../api/file'
 import { downloadResources } from '../api/resource'
 
@@ -19,9 +20,19 @@ export default function Home() {
     const [files, setFiles] = React.useState([])
     const [folders, setFolders] = React.useState([])
     const [currentFolder, setCurrentFolder] = React.useState(null)
+    const [newFolderDialog, openNewFolderDialog] = React.useState(false)
     const [clipboard, setClipboard] = React.useState({
         files: [],
         folders: []
+    })
+    const [dialog, setDialog] = React.useState({
+        opened: false,
+        title: '',
+        label: '',
+        hint: '',
+        defaultValue: '',
+        onSubmit: () => {},
+        onCancel: () => {}
     })
 
     const loadResources = async () => {
@@ -57,11 +68,66 @@ export default function Home() {
     }
 
     const handleNewFolder = async () => {
-
+        setDialog({
+            opened: true,
+            title: 'Create a new folder',
+            label: 'Folder name',
+            hint: 'Type a folder name',
+            defaultValue: '',
+            onSubmit: async name => {
+                await createFolder(name, currentFolder)
+                await loadResources()
+                setDialog({...dialog, opened: false})
+            },
+            onCancel: () => setDialog({...dialog, opened: false})
+        })
     }
 
     const handleRename = async () => {
+        const selectedFolders = getSelectedResources(folders)
+        const selectedFiles = getSelectedResources(files)
 
+        if (selectedFolders.length + selectedFiles.length === 1) {
+            if (selectedFolders.length) {
+                setDialog({
+                    opened: true,
+                    title: 'Rename a folder',
+                    label: 'Folder name',
+                    hint: 'Type a new folder name',
+                    defaultValue: '',
+                    onSubmit: async name => {
+                        await updateFolder(
+                            selectedFolders[0].pk,
+                            name,
+                            selectedFolders[0].deleted,
+                            currentFolder
+                        )
+                        await loadResources()
+                        setDialog({...dialog, opened: false})
+                    },
+                    onCancel: () => setDialog({...dialog, opened: false})
+                })
+            } else {
+                setDialog({
+                    opened: true,
+                    title: 'Rename a file',
+                    label: 'File name',
+                    hint: 'Type a new file name',
+                    defaultValue: '',
+                    onSubmit: async name => {
+                        await updateFile(
+                            selectedFiles[0].pk,
+                            name,
+                            selectedFiles[0].deleted,
+                            currentFolder
+                        )
+                        await loadResources()
+                        setDialog({...dialog, opened: false})
+                    },
+                    onCancel: () => setDialog({...dialog, opened: false})
+                })
+            }
+        }
     }
 
     const handleCopy = async () => {
@@ -92,7 +158,7 @@ export default function Home() {
         const selectedFolders = getSelectedResources(folders)
         const selectedFiles = getSelectedResources(files)
 
-        selectedFolders.forEach(async folder => await deleteFile(folder.pk))
+        selectedFolders.forEach(async folder => await deleteFolder(folder.pk))
         selectedFiles.forEach(async file => await deleteFile(file.pk))
         
         setFolders(getSelectedResources(folders, false))
@@ -122,6 +188,17 @@ export default function Home() {
                 onChangeDirectory={handleChangeDirectory}
             />
             <UploadBar onUsed={handleUpload} />
+            {dialog.opened
+            ?   <InputDialog
+                    title={dialog.title}
+                    label={dialog.label}
+                    hint={dialog.hint}
+                    defaultValue={dialog.defaultValue}
+                    onSubmit={dialog.onSubmit}
+                    onCancel={dialog.onCancel}
+                />
+            :   React.null
+            }
         </div>
     )
 }

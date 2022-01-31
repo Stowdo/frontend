@@ -2,9 +2,9 @@ import React from 'react'
 
 import './Form.scss'
 
-function Form({ title, fields=[], sendButton, cancelButton, details }) {
+function Form({ title, fields=[], sendButton, cancelButton, details, isSection=false }) {
     return (
-        <form className='Form'>
+        <form className={'Form' + (isSection ? ' Form--section' : '')}>
             <p className='Form__title'>{ title }</p>
             {fields.length
             ?   <div className='Form__fields'>

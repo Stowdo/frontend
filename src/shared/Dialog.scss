@@ -1,0 +1,21 @@
+@import '../styles/main';
+
+.Dialog {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    background-color: $color-foreground-light;
+    border-radius: 40px;
+    box-shadow: $shadow-primary;
+    padding: 20px 40px;
+    opacity: 1;
+    transition-duration: $transition-factor * 4;
+
+    &--hidden {
+        opacity: 0;
+    }
+}

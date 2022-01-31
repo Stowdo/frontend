@@ -102,6 +102,7 @@ function SignUp() {
                         Let's go
                     </ButtonWithIcon>}
                 details={<p>Already have an account ? <a href='/signin'>Sign in here</a></p>}
+                isSection={true}
             />
         </div>
     )

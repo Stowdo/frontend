@@ -69,6 +69,7 @@ export default function SignIn({ next='/' }) {
                         Let's go
                     </ButtonWithIcon>}
                 details={<p>Don’t have an account ? <a href='/signup'>Sign up here</a></p>}
+                isSection={true}
             />
         </div>
     )
