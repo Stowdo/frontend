@@ -10,15 +10,15 @@ import { ReactComponent as RenameIcon } from '../shapes/rename.svg'
 import './ActionBar.scss'
 
 
-function ActionBar() {
+function ActionBar({ onDownload, onNewFolder, onRename, onCopy, onPaste, onDelete }) {
     return (
         <div className='ActionBar'>
-            <DownloadIcon className='ActionBar__icon' title='Download' />
-            <NewFolderIcon className='ActionBar__icon' title='New folder' />
-            <RenameIcon className='ActionBar__icon' title='Rename' />
-            <CopyIcon className='ActionBar__icon' title='Copy' />
-            <PasteIcon className='ActionBar__icon' title='Paste' />
-            <DeleteIcon className='ActionBar__icon' title='Delete' />
+            <DownloadIcon className='ActionBar__icon' title='Download' onClick={() => onDownload()} />
+            <NewFolderIcon className='ActionBar__icon' title='New folder' onClick={() => onNewFolder()} />
+            <RenameIcon className='ActionBar__icon' title='Rename' onClick={() => onRename()} />
+            <CopyIcon className='ActionBar__icon' title='Copy' onClick={() => onCopy()} />
+            <PasteIcon className='ActionBar__icon' title='Paste' onClick={() => onPaste()} />
+            <DeleteIcon className='ActionBar__icon' title='Delete' onClick={() => onDelete()} />
         </div>
     )
 }

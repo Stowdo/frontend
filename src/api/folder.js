@@ -1,28 +1,23 @@
-import axios from 'axios'
-import { api_url } from "../utils";
+import { api_url, getEndpoint, updateEndpoint } from '../utils'
 
 // list
 export async function readFolders(parent_folder='') {
     const url = api_url + '/storage/folders/'
-    const response = await axios.get(url, { withCredentials: true })
-    return response.data
+    return await getEndpoint(url)
 }
 
 // details
-export async function createFolder(name, parent_folder=null) {
+export async function createFolder(name, parent_folder) {
     const url = api_url + '/storage/files/'
     const body = { name: name, parent_folder: parent_folder }
-    const response = await axios.post(url, body, { withCredentials: true })
-    return response.data
+    return await getEndpoint(url, 'post', body)
 }
 
 
 export async function readFolder(pk) {
     const url = api_url + `/storage/folder/${pk}/`
-    const response = await axios.get(url, { withCredentials: true })
-    return response.data
+    return await getEndpoint(url)
 }
-
 
 export async function updateFolder(pk, name, deleted, parent_folder) {
     const url = api_url + `/storage/folders/${pk}/`
@@ -31,6 +26,10 @@ export async function updateFolder(pk, name, deleted, parent_folder) {
         deleted: deleted,
         parent_folder: parent_folder
     }
-    const response = await axios.put(url, body, { withCredentials: true })
-    return response.data
+    return await updateEndpoint(url, 'put', body)
+}
+
+export async function deleteFolder(pk) {
+    const url = api_url + `/storage/folder/${pk}/`
+    return await updateEndpoint(url, 'delete', {})
 }

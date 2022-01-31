@@ -7,8 +7,17 @@ import { ReactComponent as CloseIcon } from '../shapes/close.svg'
 
 import './StaticHeader.scss'
 
+const defaultActions = {
+    onDownload: () => {},
+    onNewFolder: () => {},
+    onRename: () => {},
+    onCopy: () => {},
+    onPaste: () => {},
+    onDelete: () => {}
+}
 
-function StaticHeader({ withActions=false, withSettings=false, withClose=false }) {
+
+function StaticHeader({ actions=defaultActions, withActions=false, withSettings=false, withClose=false }) {
     const navigate = useNavigate()
 
     const handleSettingsClick = () => {
@@ -26,7 +35,7 @@ function StaticHeader({ withActions=false, withSettings=false, withClose=false }
                 {withActions || withSettings || withClose
                 ?   <div className='StaticHeader__actions'>
                         {withActions
-                        ?   <ActionBar />
+                        ?   <ActionBar {...actions} />
                         :   React.null
                         }
                         {withClose

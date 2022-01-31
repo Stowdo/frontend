@@ -2,10 +2,13 @@
 
 .FileListItem {
     transition-duration: $transition-factor;
+    margin: 2px 0;
 
-    * {
-        padding: 5px 0;
+    > * {
+        padding: 10px 0;
         vertical-align: middle;
+        transition-duration: 0.2s;
+        border-spacing: 0 5px;
     }
 
     &__icon {
@@ -37,5 +40,17 @@
     &:hover {
         background-color: rgba(0, 0, 0, 0.1);
         cursor: pointer;
+    }
+
+    &__selected {
+        > * {
+            background-color: $color-secondary;
+        }
+
+        &:hover {
+            > * {
+                background-color: darken($color-secondary, 10%);
+            }
+        }
     }
 }

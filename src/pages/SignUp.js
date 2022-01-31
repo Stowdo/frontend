@@ -20,11 +20,11 @@ function SignUp() {
     const navigate = useNavigate()
 
     const handleSubmit = async () => {
-        registerUser(
+        await registerUser(
             formData.username,
             formData.email,
             formData.password,
-            formData.confirm
+            formData.confirm,
         )
         navigate('/signin')
     }

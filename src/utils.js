@@ -1,3 +1,6 @@
+import axios from 'axios'
+import Cookies from 'js-cookie'
+
 const api_protocol = process.env.REACT_APP_STOWDO_API_PROTOCOL
 const api_host = process.env.REACT_APP_STOWDO_API_HOST
 const api_port = process.env.REACT_APP_STOWDO_API_PORT
@@ -19,4 +22,27 @@ export function getToken() {
     const rawToken = sessionStorage.getItem('token')
     const token = JSON.parse(rawToken)
     return token?.key
+}
+
+// requests
+export async function getEndpoint(url) {
+    const response = await axios({
+        method: 'get',
+        url: url,
+        withCredentials: true
+    })
+    return response.data
+}
+
+export async function updateEndpoint(url, method, body) {
+    const response = await axios({
+        method: method,
+        url: url,
+        data: body,
+        headers: {
+            'X-CSRFToken': Cookies.get('csrftoken')
+        },
+        withCredentials: true
+    })
+    return response.data
 }
