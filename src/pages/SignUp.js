@@ -8,9 +8,10 @@ import ButtonWithIcon from '../shared/ButtonWithIcon'
 import { ReactComponent as NextIcon } from '../shapes/next.svg'
 import { signup } from '../api/auth'
 import { useNavigate } from 'react-router-dom'
+import { setToken } from '../utils'
 
 
-function SignUp() {
+export default function SignUp({ next='/' }) {
     let [formData, setFormData] = React.useState({
         username: '',
         email: '',
@@ -19,14 +20,16 @@ function SignUp() {
     })
     const navigate = useNavigate()
 
-    const handleSubmit = async () => {
-        await signup(
+    const handleSubmit = async event => {
+        event.preventDefault()
+        const token = await signup(
             formData.username,
             formData.email,
             formData.password,
             formData.confirm,
         )
-        navigate('/signin')
+        setToken(token)
+        navigate(next, { replace: true })
     }
 
     return (
@@ -107,5 +110,3 @@ function SignUp() {
         </div>
     )
 }
-
-export default SignUp

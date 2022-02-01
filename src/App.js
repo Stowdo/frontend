@@ -17,16 +17,16 @@ export default function App() {
                 <Route
                     path='/'
                     element={
-                        <Restricted>
-                            <Home next='/' />
+                        <Restricted next='/'>
+                            <Home />
                         </Restricted>
                     }
                 />
                 <Route
                     path='/settings'
                     element={
-                        <Restricted>
-                            <Settings next='/settings' />
+                        <Restricted next='/settings'>
+                            <Settings />
                         </Restricted>
                     }
                 />
