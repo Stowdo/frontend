@@ -26,6 +26,8 @@
     &__text {
         font-size: 1.2em;
         color: $color-foreground-dark;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
 
     &__meta {
@@ -51,6 +53,27 @@
             > * {
                 background-color: darken($color-secondary, 10%);
             }
+        }
+    }
+}
+
+@media (max-width: 600px) {
+    .FileListItem {
+        > * {
+            padding: 2px 0;
+        }
+
+        &__icon {
+            padding-left: 15px;;
+        }
+
+        &__meta {
+            border-radius: 0 100px 100px 0;
+            padding-right: 15px;
+        }
+
+        &__date {
+            display: none;
         }
     }
 }

@@ -22,6 +22,10 @@
     &__actions {
         display: flex;
         align-items: center;
+
+        > :first-child {
+            margin-right: 30px;
+        }
     }
 
     &__icon {
@@ -29,10 +33,34 @@
         width: 30px;
         height: 30px;
         transition-duration: $transition-factor * 2;
+    }
 
+    &:not(.StaticHeader--disabled) .StaticHeader__icon {
         &:hover {
             cursor: pointer;
             fill: darken($color-foreground-light, 10%);
+        }
+    }
+}
+
+@media (max-width: 600px) {
+    .StaticHeader {
+        &__inner {
+            flex-direction: column;
+        }
+
+        &__icon {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+        }
+
+        &__actions {
+            justify-content: center;
+
+            > :first-child {
+                margin-right: initial;
+            }
         }
     }
 }

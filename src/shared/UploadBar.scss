@@ -12,21 +12,19 @@ $label-offset: $button-padding + math.div($icon-size, 2);
 
     &__container {
         position: fixed;
-        bottom: 15%;
+        bottom: 80px;
         right: 7%;
         transition-duration: $transition-factor * 2;
 
-        &:hover {
-            cursor: pointer;
-            
-            .UploadBar {
-                &__label {
-                    background-color: darken($color-secondary, 4%);
-                }
+        :hover:not(.UploadBar--disabled) {
+            .UploadBar__label {
+                cursor: pointer;
+                background-color: darken($color-secondary, 4%);
+            }
 
-                &__button {
-                    background-color: darken($color-primary, 10%);
-                }
+            .UploadBar__button {
+                cursor: pointer;
+                background-color: darken($color-primary, 10%);
             }
         }
     }
@@ -60,5 +58,16 @@ $label-offset: $button-padding + math.div($icon-size, 2);
 
     &__input {
         display: none;
+    }
+}
+
+@media (max-width: 350px) {
+    .UploadBar {
+        transform: scale(80%);
+
+        &__container {
+            bottom: 30px;
+            right: 5px;
+        }
     }
 }

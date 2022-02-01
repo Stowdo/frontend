@@ -35,3 +35,15 @@
         margin-bottom: 40px;
     }
 }
+
+@media (max-width: 600px) {
+    .Form {
+        &__buttons {
+            flex-direction: column;
+
+            > * {
+                margin: 10px 0;
+            }
+        }
+    }
+}

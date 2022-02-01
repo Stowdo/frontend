@@ -7,12 +7,10 @@ import SignIn from './pages/SignIn'
 import SignUp from './pages/SignUp'
 import Restricted from './shared/Restricted'
 
-import './App.scss'
-
 
 export default function App() {
     return (
-        <div className='App'>
+        <div>
             <Routes>
                 <Route
                     path='/'

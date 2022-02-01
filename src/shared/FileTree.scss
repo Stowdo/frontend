@@ -29,3 +29,16 @@
         font-size: 1.2em;
     }
 }
+
+@media (max-width: 350px) {
+    .FileTree {
+        margin-top: 10px;
+        
+        &__inner {
+            border-radius: 0;
+            padding: 5px 5px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+    }
+}

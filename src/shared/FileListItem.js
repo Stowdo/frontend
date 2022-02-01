@@ -24,13 +24,13 @@ function FileListItem({ name, size, date, isFolder, onSelect, onOpen=() => {} })
                 {isFolder ? <FolderIcon /> : <FileIcon />}
             </td>
             <td className='FileListItem__text'>
-                <p>{name}</p>
+                {name}
             </td>
             <td className='FileListItem__meta FileListItem__text'>
-                <p>{humanFileSize(size)}</p>
+                {humanFileSize(size)}
             </td>
             <td className='FileListItem__meta FileListItem__text FileListItem__date'>
-                <p>{humanDateTime(date)}</p>
+                {humanDateTime(date)}
             </td>
         </tr>
     )

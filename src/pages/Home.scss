@@ -1,0 +1,9 @@
+@import '../styles/main';
+
+.Home {
+    transition-duration: $transition-factor;
+    
+    &--blur > *:not(.Dialog) {
+        filter: blur(5px) grayscale(80%);
+    }
+}

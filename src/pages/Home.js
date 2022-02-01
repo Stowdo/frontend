@@ -10,6 +10,8 @@ import { createFolder, deleteFolder, downloadFolder, downloadFolders, readFolder
 import { createFile, deleteFile, downloadFile, downloadFiles, readFiles, updateFile } from '../api/file'
 import { downloadResources } from '../api/resource'
 
+import './Home.scss'
+
 
 function getSelectedResources(resources, selected=true) {
     return resources.filter(resource => resource.selected === selected)
@@ -145,8 +147,8 @@ export default function Home() {
         const selectedFolders = getSelectedResources(folders)
         const selectedFiles = getSelectedResources(files)
         setClipboard({
-            folders: selectedFolders.map(folder => folder.id),
-            files: selectedFiles.map(file => file.id)
+            folders: selectedFolders,
+            files: selectedFiles,
         })
     }
 
@@ -190,8 +192,13 @@ export default function Home() {
     }, [currentFolder])
 
     return (
-        <div>
-            <StaticHeader actions={actions} withActions={true} withSettings={true} />
+        <div className={'Home' + (dialog.opened ? ' Home--blur' : '')}>
+            <StaticHeader
+                actions={actions}
+                withActions={true}
+                withSettings={true}
+                disabled={dialog.opened}
+            />
             <FileTree />
             <FileList
                 folders={folders}
@@ -199,7 +206,7 @@ export default function Home() {
                 onChangeDirectory={handleChangeDirectory}
                 currentFolder={currentFolder}
             />
-            <UploadBar onUsed={handleUpload} />
+            <UploadBar onUsed={handleUpload} disabled={dialog.opened} />
             {dialog.opened
             ?   <InputDialog
                     title={dialog.title}

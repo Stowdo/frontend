@@ -17,7 +17,13 @@ const defaultActions = {
 }
 
 
-function StaticHeader({ actions=defaultActions, withActions=false, withSettings=false, withClose=false }) {
+function StaticHeader({
+    actions=defaultActions,
+    withActions=false,
+    withSettings=false,
+    withClose=false,
+    disabled=false
+}) {
     const navigate = useNavigate()
 
     const handleSettingsClick = () => {
@@ -29,24 +35,24 @@ function StaticHeader({ actions=defaultActions, withActions=false, withSettings=
     }
 
     return (
-        <div className='StaticHeader'>
+        <div className={'StaticHeader' + (disabled ? ' StaticHeader--disabled' : '')}>
             <div className='StaticHeader__inner'>
                 <a href='/'><h1>Stowdo</h1></a>
                 {withActions || withSettings || withClose
                 ?   <div className='StaticHeader__actions'>
                         {withActions
-                        ?   <ActionBar {...actions} />
+                        ?   <ActionBar {...actions} disabled={disabled} />
                         :   React.null
                         }
                         {withClose
                         ?   <CloseIcon
                                 className='StaticHeader__icon'
-                                onClick={handleCloseClick}
+                                onClick={event => {disabled || handleCloseClick(event)}}
                             />
                         :   withSettings
                             ?   <SettingsIcon
                                     className='StaticHeader__icon'
-                                    onClick={handleSettingsClick}
+                                    onClick={event => {disabled || handleSettingsClick(event)}}
                                 />
                             :       React.null
                         }

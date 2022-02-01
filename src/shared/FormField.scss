@@ -16,3 +16,14 @@
         margin-right: 20px;
     }
 }
+
+@media (max-width: 600px) {
+    .FormField {
+        margin: 20px 0;
+        flex-direction: column;
+
+        &__label {
+            margin-bottom: 5px;
+        }
+    }
+}
