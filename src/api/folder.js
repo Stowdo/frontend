@@ -2,7 +2,8 @@ import { api_url, downloadEndpoint, getEndpoint, updateEndpoint } from '../utils
 
 // list
 export async function readFolders(parent_folder='') {
-    const url = api_url + '/storage/folders/'
+    parent_folder = parent_folder || ''
+    const url = api_url + `/storage/folders/?parent_folder=${parent_folder}`
     return await getEndpoint(url)
 }
 

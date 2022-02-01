@@ -197,6 +197,7 @@ export default function Home() {
                 folders={folders}
                 files={files}
                 onChangeDirectory={handleChangeDirectory}
+                currentFolder={currentFolder}
             />
             <UploadBar onUsed={handleUpload} />
             {dialog.opened

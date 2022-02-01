@@ -10,17 +10,18 @@ import { readUser, updateUser } from '../api/user'
 
 function Settings() {
     let [user, setUser] = React.useState({
-        username: '',
-        email: '',
-        firstname: '',
-        lastname: ''
+        username: { value: '', modified: false },
+        email: { value: '', modified: false },
+        firstname: { value: '', modified: false },
+        lastname: { value: '', modified: false }
     })
     let [password, setPassword] = React.useState({
-        password: '',
-        confirm: ''
+        password: { value: '', modified: false },
+        confirm: { value: '', modified: false },
     })
 
-    const handleSubmitUser = async () => {
+    const handleSubmitUser = async event => {
+        event.preventDefault()
         await updateUser(user.username, user.firstname, user.lastname)
     }
 
@@ -114,7 +115,10 @@ function Settings() {
                 cancelButton={
                     <Button
                         key='cancel'
-                        onClick={loadUser}
+                        onClick={async event => {
+                            event.preventDefault()
+                            await loadUser()
+                        }}
                         disabled={false}
                         secondary={true}
                     >

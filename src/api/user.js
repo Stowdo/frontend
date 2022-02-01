@@ -25,12 +25,12 @@ export async function readUser() {
     return await getEndpoint(url)
 }
 
-export async function updateUser(username, firstname, lastname, csrfToken) {
-    const url = api_url + '/'
+export async function updateUser(username, firstname, lastname) {
+    const url = api_url + '/auth/user/'
     const body = {
         username: username,
         first_name: firstname,
         last_name: lastname
     }
-    return await updateEndpoint(url, 'post', body, csrfToken)
+    return await updateEndpoint(url, 'put', body)
 }

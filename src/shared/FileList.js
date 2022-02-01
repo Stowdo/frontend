@@ -1,11 +1,12 @@
 import React from 'react'
 
 import FileListItem from './FileListItem'
+import FileListParentItem from './FileListParentItem'
 
 import './FileList.scss'
 
 
-export default function FileList({ files, folders, onChangeDirectory }) {
+export default function FileList({ files, folders, onChangeDirectory, currentFolder=null }) {
     const handleSelectFolder = (pk, selected) => {
         const folder = folders.find(folder => folder.pk === pk)
         folder.selected = selected
@@ -24,6 +25,10 @@ export default function FileList({ files, folders, onChangeDirectory }) {
         <div className='FileList'>
             <table className='FileList__inner'>
                 <tbody>
+                    {currentFolder
+                    ?   <FileListParentItem onOpen={() => handleOpen(currentFolder.pk)} />
+                    :   React.null
+                    }
                     {folders.map(folder => 
                         <FileListItem
                             key={folder.pk}
