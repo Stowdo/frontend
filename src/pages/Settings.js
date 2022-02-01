@@ -5,57 +5,71 @@ import Form from '../shared/Form'
 import FormField from '../shared/FormField'
 import FormInput from '../shared/FormInput'
 import Button from '../shared/Button'
-import { readUser, updateUser } from '../api/user'
-import { signout } from '../api/auth'
+import { deleteUser, updateUser } from '../api/user'
+import { changePassword, getConnectedUser, signout } from '../api/auth'
 import { useNavigate } from 'react-router-dom'
 import { removeToken } from '../utils'
 
 
 function Settings() {
-    const [defaultUser, setDefaultUser] = React.useState({
-        username: '',
-        email: '',
-        firstname: '',
-        lastname: '',
-    })
     const [user, setUser] = React.useState({
+        id: -1,
         username: '',
         email: '',
         firstname: '',
         lastname: '',
     })
     const [password, setPassword] = React.useState({
-        password: { value: '', modified: false },
-        confirm: { value: '', modified: false },
+        newPassword1: '',
+        newPassword2: '',
+        oldPassword: ''
     })
     const navigate = useNavigate()
 
     const handleSubmitUser = async event => {
         event.preventDefault()
         await updateUser(
-            user.username !== defaultUser.username ? user.username : null,
-            user.firstname !== defaultUser.firstname ? user.firstname : null,
-            user.lastname !== defaultUser.lastname ? user.lastname : null,
+            user.id,
+            user.username,
+            user.email,
+            user.firstname,
+            user.lastname,
         )
     }
 
-    const handleLogout = async event => {
+    const handleChangePassword = async event => {
+        event.preventDefault()
+        await changePassword(
+            password.newPassword1,
+            password.newPassword2,
+            password.oldPassword
+        )
+    }
+
+    const handleSignout = async event => {
         event.preventDefault()
         await signout()
         removeToken()
         navigate('/signin')
     }
 
+    const handleDeleteUser = async event => {
+        event.preventDefault()
+        await deleteUser(user.id)
+        await signout()
+        removeToken()
+        navigate('/signup')
+    }
+
     const loadUser = async () => {
-        const { username, email, first_name, last_name } = await readUser()
-        const formatted = {
+        const { pk, username, email, first_name, last_name } = await getConnectedUser()
+        setUser({
+            id: pk,
             username: username,
             email: email,
             firstname: first_name,
             lastname: last_name
-        }
-        setDefaultUser(formatted)
-        setUser(formatted)
+        })
     }
 
     React.useEffect(() => {
@@ -154,29 +168,46 @@ function Settings() {
                 title='Password settings'
                 fields={[
                     <FormField
-                        key='password'
-                        label='Password'
+                        key='newPassword1'
+                        label='New password'
                         input={<FormInput
-                            value={password.password}
+                            value={password.newPassword1}
                             hint='Type a new password'
+                            type='password'
                             onChange={event => {
                                 setPassword({
                                     ...password,
-                                    password: event.target.value
+                                    newPassword1: event.target.value
                                 })
                             }}
                         />}
                     />,
                     <FormField
-                        key='confirm'
+                        key='newPassword2'
                         label='Confirm password'
                         input={<FormInput
-                            value={password.confirm}
+                            value={password.newPassword2}
                             hint='Confirm your new password'
+                            type='password'
                             onChange={event => {
                                 setPassword({
                                     ...password,
-                                    confirm: event.target.value
+                                    newPassword2: event.target.value
+                                })
+                            }}
+                        />}
+                    />,
+                    <FormField
+                        key='oldPassword'
+                        label='Old password'
+                        input={<FormInput
+                            value={password.oldPassword}
+                            hint='Confirm your old password'
+                            type='password'
+                            onChange={event => {
+                                setPassword({
+                                    ...password,
+                                    oldPassword: event.target.value
                                 })
                             }}
                         />}
@@ -185,7 +216,7 @@ function Settings() {
                 sendButton={
                     <Button
                         key='save'
-                        onClick={() => {}}
+                        onClick={handleChangePassword}
                         disabled={false}
                         secondary={false}
                     >
@@ -195,7 +226,10 @@ function Settings() {
                 cancelButton={
                     <Button
                         key='cancel'
-                        onClick={() => {}}
+                        onClick={async event => {
+                            event.preventDefault()
+                            await loadUser()
+                        }}
                         disabled={false}
                         secondary={true}
                     >
@@ -205,15 +239,25 @@ function Settings() {
                 isSection={true}
             />
             <Form
-                title='Session actions'
+                title='Other actions'
                 sendButton={
                     <Button
                         key='signout'
-                        onClick={handleLogout}
+                        onClick={handleSignout}
                         disabled={false}
                         secondary={false}
                     >
                         Sign out
+                    </Button>
+                }
+                cancelButton={
+                    <Button
+                        key='Delete user'
+                        onClick={handleDeleteUser}
+                        disabled={false}
+                        secondary={true}
+                    >
+                        Delete user
                     </Button>
                 }
                 isSection={true}

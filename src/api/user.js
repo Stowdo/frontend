@@ -1,24 +1,23 @@
 import { api_url, getEndpoint, updateEndpoint } from '../utils'
 
 
-export async function readUser() {
-    const url = api_url + '/auth/user/'
+export async function readUser(id) {
+    const url = api_url + `/users/${id}/`
     return await getEndpoint(url)
 }
 
-export async function updateUser(username=null, firstname=null, lastname=null) {
-    const url = api_url + '/auth/user/'
-    let body = {}
-
-    if (username !== null) {
-        body.username = username
+export async function updateUser(id, username, email, firstname, lastname) {
+    const url = api_url + `/users/${id}/`
+    let body = {
+        username: username,
+        email: email,
+        first_name: firstname,
+        last_name: lastname
     }
-    if (firstname !== null) {
-        body.firstname = firstname
-    }
-    if (lastname !== null) {
-        body.lastname = lastname
-    }
-
     return await updateEndpoint(url, 'put', body)
+}
+
+export async function deleteUser(id) {
+    const url = api_url + `/users/${id}/`
+    return await updateEndpoint(url, 'delete', {})
 }
