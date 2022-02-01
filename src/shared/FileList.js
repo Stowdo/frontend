@@ -7,18 +7,18 @@ import './FileList.scss'
 
 
 export default function FileList({ files, folders, onChangeDirectory, currentFolder=null }) {
-    const handleSelectFolder = (pk, selected) => {
-        const folder = folders.find(folder => folder.pk === pk)
+    const handleSelectFolder = (id, selected) => {
+        const folder = folders.find(folder => folder.id === id)
         folder.selected = selected
     }
 
-    const handleSelectFile = (pk, selected) => {
-        const file = files.find(file => file.pk === pk)
+    const handleSelectFile = (id, selected) => {
+        const file = files.find(file => file.id === id)
         file.selected = selected
     }
 
-    const handleOpen = pk => {
-        onChangeDirectory(pk)
+    const handleOpen = id => {
+        onChangeDirectory(id)
     }
 
     return (
@@ -26,28 +26,28 @@ export default function FileList({ files, folders, onChangeDirectory, currentFol
             <table className='FileList__inner'>
                 <tbody>
                     {currentFolder
-                    ?   <FileListParentItem onOpen={() => handleOpen(currentFolder.pk)} />
+                    ?   <FileListParentItem onOpen={() => handleOpen(currentFolder.id)} />
                     :   React.null
                     }
                     {folders.map(folder => 
                         <FileListItem
-                            key={folder.pk}
+                            key={folder.id}
                             name={folder.name}
                             size={folder.size}
                             date={folder.creation_date}
                             isFolder={true}
-                            onSelect={selected => handleSelectFolder(folder.pk, selected)}
-                            onOpen={() => handleOpen(folder.pk)}
+                            onSelect={selected => handleSelectFolder(folder.id, selected)}
+                            onOpen={() => handleOpen(folder.id)}
                         />
                     )}
                     {files.map(file => 
                         <FileListItem
-                            key={file.pk}
+                            key={file.id}
                             name={file.name}
                             size={file.size}
                             date={file.upload_date}
                             isFolder={false}
-                            onSelect={selected => handleSelectFile(file.pk, selected)}
+                            onSelect={selected => handleSelectFile(file.id, selected)}
                         />
                     )}
                 </tbody>

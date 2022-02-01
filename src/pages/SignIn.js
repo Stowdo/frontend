@@ -7,7 +7,7 @@ import StaticHeader from '../shared/StaticHeader'
 import ButtonWithIcon from '../shared/ButtonWithIcon'
 import { ReactComponent as NextIcon } from '../shapes/next.svg'
 import { setToken } from '../utils'
-import { loginUser } from '../api/user'
+import { signin } from '../api/auth'
 import { useNavigate } from 'react-router-dom'
 
 
@@ -20,7 +20,7 @@ export default function SignIn({ next='/' }) {
 
     const handleSubmit = async event => {
         event.preventDefault()
-        const token = await loginUser(formData.username, formData.password)
+        const token = await signin(formData.username, formData.password)
         setToken(token)
         navigate(next, { replace: true })
     }

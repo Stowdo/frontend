@@ -6,33 +6,56 @@ import FormField from '../shared/FormField'
 import FormInput from '../shared/FormInput'
 import Button from '../shared/Button'
 import { readUser, updateUser } from '../api/user'
+import { signout } from '../api/auth'
+import { useNavigate } from 'react-router-dom'
+import { removeToken } from '../utils'
 
 
 function Settings() {
-    let [user, setUser] = React.useState({
-        username: { value: '', modified: false },
-        email: { value: '', modified: false },
-        firstname: { value: '', modified: false },
-        lastname: { value: '', modified: false }
+    const [defaultUser, setDefaultUser] = React.useState({
+        username: '',
+        email: '',
+        firstname: '',
+        lastname: '',
     })
-    let [password, setPassword] = React.useState({
+    const [user, setUser] = React.useState({
+        username: '',
+        email: '',
+        firstname: '',
+        lastname: '',
+    })
+    const [password, setPassword] = React.useState({
         password: { value: '', modified: false },
         confirm: { value: '', modified: false },
     })
+    const navigate = useNavigate()
 
     const handleSubmitUser = async event => {
         event.preventDefault()
-        await updateUser(user.username, user.firstname, user.lastname)
+        await updateUser(
+            user.username !== defaultUser.username ? user.username : null,
+            user.firstname !== defaultUser.firstname ? user.firstname : null,
+            user.lastname !== defaultUser.lastname ? user.lastname : null,
+        )
+    }
+
+    const handleLogout = async event => {
+        event.preventDefault()
+        await signout()
+        removeToken()
+        navigate('/signin')
     }
 
     const loadUser = async () => {
         const { username, email, first_name, last_name } = await readUser()
-        setUser({
+        const formatted = {
             username: username,
             email: email,
             firstname: first_name,
             lastname: last_name
-        })
+        }
+        setDefaultUser(formatted)
+        setUser(formatted)
     }
 
     React.useEffect(() => {
@@ -182,25 +205,15 @@ function Settings() {
                 isSection={true}
             />
             <Form
-                title='Danger zone'
+                title='Session actions'
                 sendButton={
                     <Button
-                        key='delete'
-                        onClick={() => {}}
+                        key='signout'
+                        onClick={handleLogout}
                         disabled={false}
                         secondary={false}
                     >
-                        Delete this account
-                    </Button>
-                }
-                cancelButton={
-                    <Button
-                        key='reset'
-                        onClick={() => {}}
-                        disabled={false}
-                        secondary={true}
-                    >
-                        Reset storage
+                        Sign out
                     </Button>
                 }
                 isSection={true}

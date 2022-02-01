@@ -15,13 +15,13 @@ export async function createFolder(name, parent_folder) {
 }
 
 
-export async function readFolder(pk) {
-    const url = api_url + `/storage/folder/${pk}/`
+export async function readFolder(id) {
+    const url = api_url + `/storage/folder/${id}/`
     return await getEndpoint(url)
 }
 
-export async function updateFolder(pk, name, deleted, parent_folder) {
-    const url = api_url + `/storage/folders/${pk}/`
+export async function updateFolder(id, name, deleted, parent_folder) {
+    const url = api_url + `/storage/folders/${id}/`
     const body = {
         name: name,
         deleted: deleted,
@@ -30,19 +30,19 @@ export async function updateFolder(pk, name, deleted, parent_folder) {
     return await updateEndpoint(url, 'put', body)
 }
 
-export async function deleteFolder(pk) {
-    const url = api_url + `/storage/folders/${pk}/`
+export async function deleteFolder(id) {
+    const url = api_url + `/storage/folders/${id}/`
     return await updateEndpoint(url, 'delete', {})
 }
 
 // download
-export async function downloadFolder(pk) {
-    const url = api_url + `/storage/folders/${pk}/download/`
+export async function downloadFolder(id) {
+    const url = api_url + `/storage/folders/${id}/download/`
     await downloadEndpoint(url, 'get', {})
 }
 
-export async function downloadFolders(pks) {
+export async function downloadFolders(ids) {
     const url = api_url + '/storage/folders/download/'
-    const body = { folders: pks }
+    const body = { folders: ids }
     await downloadEndpoint(url, 'post', body)
 }

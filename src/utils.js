@@ -14,7 +14,7 @@ export function hashCode(s) {
 }
 
 // string format
-export function humanFileSize(bytes, si=false, dp=1) {
+export function humanFileSize(bytes, si=true, dp=1) {
     const thresh = si ? 1000 : 1024;
 
     if (Math.abs(bytes) < thresh) {
@@ -49,6 +49,10 @@ export function getToken() {
     const rawToken = sessionStorage.getItem('token')
     const token = JSON.parse(rawToken)
     return token?.key
+}
+
+export function removeToken() {
+    sessionStorage.removeItem('token')
 }
 
 // requests

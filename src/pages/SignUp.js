@@ -6,7 +6,7 @@ import FormField from '../shared/FormField'
 import FormInput from '../shared/FormInput'
 import ButtonWithIcon from '../shared/ButtonWithIcon'
 import { ReactComponent as NextIcon } from '../shapes/next.svg'
-import { registerUser } from '../api/user'
+import { signup } from '../api/auth'
 import { useNavigate } from 'react-router-dom'
 
 
@@ -20,7 +20,7 @@ function SignUp() {
     const navigate = useNavigate()
 
     const handleSubmit = async () => {
-        await registerUser(
+        await signup(
             formData.username,
             formData.email,
             formData.password,

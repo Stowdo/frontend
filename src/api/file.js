@@ -19,14 +19,14 @@ export async function createFile(file, parent_folder) {
 }
 
 
-export async function readFile(pk) {
-    const url = api_url + `/storage/file/${pk}/`
+export async function readFile(id) {
+    const url = api_url + `/storage/file/${id}/`
     return await getEndpoint(url)
 }
 
 
-export async function updateFile(pk, name, deleted, parent_folder) {
-    const url = api_url + `/storage/files/${pk}/`
+export async function updateFile(id, name, deleted, parent_folder) {
+    const url = api_url + `/storage/files/${id}/`
     const body = {
         name: name,
         deleted: deleted,
@@ -35,19 +35,19 @@ export async function updateFile(pk, name, deleted, parent_folder) {
     return await updateEndpoint(url, 'put', body)
 }
 
-export async function deleteFile(pk) {
-    const url = api_url + `/storage/files/${pk}/`
+export async function deleteFile(id) {
+    const url = api_url + `/storage/files/${id}/`
     return await updateEndpoint(url, 'delete', {})
 }
 
 // download
-export async function downloadFile(pk) {
-    const url = api_url + `/storage/files/${pk}/download/`
+export async function downloadFile(id) {
+    const url = api_url + `/storage/files/${id}/download/`
     await downloadEndpoint(url, 'get', {})
 }
 
-export async function downloadFiles(pks) {
+export async function downloadFiles(ids) {
     const url = api_url + '/storage/files/download/'
-    const body = { files: pks }
+    const body = { files: ids }
     await downloadEndpoint(url, 'post', body)
 }

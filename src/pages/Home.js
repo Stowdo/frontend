@@ -58,21 +58,21 @@ export default function Home() {
 
         if (selectedFolders.length && selectedFiles.length) {
             await downloadResources(
-                selectedFolders.map(folder => folder.pk),
-                selectedFiles.map(file => file.pk),
+                selectedFolders.map(folder => folder.id),
+                selectedFiles.map(file => file.id),
             )
         } else if (selectedFolders.length) {
             if (selectedFolders.length === 1) {
-                await downloadFolder(selectedFolders[0].pk)
+                await downloadFolder(selectedFolders[0].id)
             } else {
-                await downloadFolders(selectedFolders.map(folder => folder.pk))
+                await downloadFolders(selectedFolders.map(folder => folder.id))
             }
         } else if (selectedFiles.length) {
             if (selectedFiles.length === 1) {
-                await downloadFile(selectedFiles[0].pk)
+                await downloadFile(selectedFiles[0].id)
             } else {
                 await downloadFiles(
-                    selectedFiles.map(file => file.pk),
+                    selectedFiles.map(file => file.id),
                 )
             }
         }
@@ -108,7 +108,7 @@ export default function Home() {
                     defaultValue: '',
                     onSubmit: async name => {
                         await updateFolder(
-                            selectedFolders[0].pk,
+                            selectedFolders[0].id,
                             name,
                             selectedFolders[0].deleted,
                             currentFolder
@@ -127,7 +127,7 @@ export default function Home() {
                     defaultValue: '',
                     onSubmit: async name => {
                         await updateFile(
-                            selectedFiles[0].pk,
+                            selectedFiles[0].id,
                             name,
                             selectedFiles[0].deleted,
                             currentFolder
@@ -145,20 +145,20 @@ export default function Home() {
         const selectedFolders = getSelectedResources(folders)
         const selectedFiles = getSelectedResources(files)
         setClipboard({
-            folders: selectedFolders.map(folder => folder.pk),
-            files: selectedFiles.map(file => file.pk)
+            folders: selectedFolders.map(folder => folder.id),
+            files: selectedFiles.map(file => file.id)
         })
     }
 
     const handlePaste = async () => {
         clipboard.folders.forEach(async folder => await updateFolder(
-            folder.pk,
+            folder.id,
             folder.name,
             folder.deleted,
             currentFolder
         ))
         clipboard.files.forEach(async file => await updateFile(
-            file.pk,
+            file.id,
             file.name,
             file.deleted,
             currentFolder
@@ -169,8 +169,8 @@ export default function Home() {
         const selectedFolders = getSelectedResources(folders)
         const selectedFiles = getSelectedResources(files)
 
-        selectedFolders.forEach(async folder => await deleteFolder(folder.pk))
-        selectedFiles.forEach(async file => await deleteFile(file.pk))
+        selectedFolders.forEach(async folder => await deleteFolder(folder.id))
+        selectedFiles.forEach(async file => await deleteFile(file.id))
         
         setFolders(getSelectedResources(folders, false))
         setFiles(getSelectedResources(files, false))
