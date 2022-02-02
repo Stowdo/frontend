@@ -5,6 +5,8 @@ import Form from '../shared/Form'
 import FormField from '../shared/FormField'
 import FormInput from '../shared/FormInput'
 import Button from '../shared/Button'
+import Toast from '../shared/Toast'
+
 import { deleteUser, updateUser } from '../api/user'
 import { changePassword, getConnectedUser, signout } from '../api/auth'
 import { useNavigate } from 'react-router-dom'
@@ -24,52 +26,91 @@ function Settings() {
         newPassword2: '',
         oldPassword: ''
     })
+    const [toast, setToast] = React.useState({
+        opened: false,
+        message: '',
+    })
     const navigate = useNavigate()
 
     const handleSubmitUser = async event => {
         event.preventDefault()
-        await updateUser(
-            user.id,
-            user.username,
-            user.email,
-            user.firstname,
-            user.lastname,
-        )
+        try {
+            await updateUser(
+                user.id,
+                user.username,
+                user.email,
+                user.firstname,
+                user.lastname,
+            )
+        } catch(e) {
+            setToast({
+                opened: true,
+                message: 'Unable to update user settings'
+            })
+        }
     }
 
     const handleChangePassword = async event => {
         event.preventDefault()
-        await changePassword(
-            password.newPassword1,
-            password.newPassword2,
-            password.oldPassword
-        )
+        try {
+            await changePassword(
+                password.newPassword1,
+                password.newPassword2,
+                password.oldPassword
+            )
+        } catch(e) {
+            setToast({
+                opened: true,
+                message: 'Unable to update password settings'
+            })
+        }
     }
 
     const handleSignout = async event => {
         event.preventDefault()
-        await signout()
-        removeToken()
-        navigate('/signin')
+        try {
+            await signout()
+            removeToken()
+            navigate('/signin')
+        } catch(e) {
+            setToast({
+                opened: true,
+                message: 'Unable to signout'
+            })
+        }
     }
 
     const handleDeleteUser = async event => {
         event.preventDefault()
-        await deleteUser(user.id)
-        await signout()
-        removeToken()
-        navigate('/signup')
+        try {
+            await deleteUser(user.id)
+            await signout()
+            removeToken()
+            navigate('/signup')
+        } catch(e) {
+            setToast({
+                opened: true,
+                message: 'Unable to delete user'
+            })
+        }
     }
 
     const loadUser = async () => {
-        const { pk, username, email, first_name, last_name } = await getConnectedUser()
-        setUser({
-            id: pk,
-            username: username,
-            email: email,
-            firstname: first_name,
-            lastname: last_name
-        })
+        try {
+            const { pk, username, email, first_name, last_name } = await getConnectedUser()
+            setUser({
+                id: pk,
+                username: username,
+                email: email,
+                firstname: first_name,
+                lastname: last_name
+            })
+        } catch(e) {
+            setToast({
+                opened: true,
+                message: 'Unable to load the connected user'
+            })
+        }
     }
 
     React.useEffect(() => {
@@ -262,6 +303,10 @@ function Settings() {
                 }
                 isSection={true}
             />
+            {toast.opened
+            ?   <Toast message={toast.message} onDestroy={() => setToast({...toast, opened: false})} />
+            :   React.null
+            }
         </div>
     )
 }

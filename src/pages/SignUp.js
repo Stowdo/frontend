@@ -5,6 +5,7 @@ import Form from '../shared/Form'
 import FormField from '../shared/FormField'
 import FormInput from '../shared/FormInput'
 import ButtonWithIcon from '../shared/ButtonWithIcon'
+import Toast from '../shared/Toast'
 import { ReactComponent as NextIcon } from '../shapes/next.svg'
 import { signup } from '../api/auth'
 import { useNavigate } from 'react-router-dom'
@@ -18,18 +19,30 @@ export default function SignUp({ next='/' }) {
         password: '',
         confirm: '',
     })
+    const [toast, setToast] = React.useState({
+        opened: false,
+        message: '',
+    })
     const navigate = useNavigate()
 
     const handleSubmit = async event => {
         event.preventDefault()
-        const token = await signup(
-            formData.username,
-            formData.email,
-            formData.password,
-            formData.confirm,
-        )
-        setToken(token)
-        navigate(next, { replace: true })
+
+        try {
+            const token = await signup(
+                formData.username,
+                formData.email,
+                formData.password,
+                formData.confirm,
+            )
+            setToken(token)
+            navigate(next, { replace: true })
+        } catch(e) {
+            setToast({
+                opened: true,
+                message: 'Unable to sign-up with these credentials'
+            })
+        }
     }
 
     return (
@@ -107,6 +120,10 @@ export default function SignUp({ next='/' }) {
                 details={<p>Already have an account ? <a href='/signin'>Sign in here</a></p>}
                 isSection={true}
             />
+            {toast.opened
+            ?   <Toast message={toast.message} onDestroy={() => setToast({...toast, opened: false})} />
+            :   React.null
+            }
         </div>
     )
 }

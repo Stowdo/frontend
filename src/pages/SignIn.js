@@ -5,6 +5,7 @@ import FormField from '../shared/FormField'
 import FormInput from '../shared/FormInput'
 import StaticHeader from '../shared/StaticHeader'
 import ButtonWithIcon from '../shared/ButtonWithIcon'
+import Toast from '../shared/Toast'
 import { ReactComponent as NextIcon } from '../shapes/next.svg'
 import { setToken } from '../utils'
 import { signin } from '../api/auth'
@@ -16,13 +17,25 @@ export default function SignIn({ next='/' }) {
         username: '',
         password: ''
     })
+    const [toast, setToast] = React.useState({
+        opened: false,
+        message: '',
+    })
     const navigate = useNavigate()
 
     const handleSubmit = async event => {
         event.preventDefault()
-        const token = await signin(formData.username, formData.password)
-        setToken(token)
-        navigate(next, { replace: true })
+        
+        try {
+            const token = await signin(formData.username, formData.password)
+            setToken(token)
+            navigate(next, { replace: true })
+        } catch(e) {
+            setToast({
+                opened: true,
+                message: 'Unable to sign-in with these credentials'
+            })
+        }
     }
 
     return (
@@ -71,6 +84,10 @@ export default function SignIn({ next='/' }) {
                 details={<p>Don’t have an account ? <a href='/signup'>Sign up here</a></p>}
                 isSection={true}
             />
+            {toast.opened
+            ?   <Toast message={toast.message} onDestroy={() => setToast({...toast, opened: false})} />
+            :   React.null
+            }
         </div>
     )
 }

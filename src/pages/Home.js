@@ -5,6 +5,7 @@ import FileTree from '../shared/FileTree'
 import FileList from '../shared/FileList'
 import UploadBar from '../shared/UploadBar'
 import InputDialog from '../shared/InputDialog'
+import Toast from '../shared/Toast'
 
 import { createFolder, deleteFolder, downloadFolder, downloadFolders, readFolders, updateFolder } from '../api/folder'
 import { createFile, deleteFile, downloadFile, downloadFiles, readFiles, updateFile } from '../api/file'
@@ -35,6 +36,10 @@ export default function Home() {
         onSubmit: () => {},
         onCancel: () => {}
     })
+    const [toast, setToast] = React.useState({
+        opened: false,
+        message: '',
+    })
 
     const getCurrentFoderId = () => {
         return currentFolder?.id
@@ -42,12 +47,20 @@ export default function Home() {
 
     const loadResources = async () => {
         const folderId = getCurrentFoderId()
-        setFolders((await readFolders(folderId)).map(folder => {
-            return {...folder, isFolder: true, selected: false}
-        }))
-        setFiles((await readFiles(folderId)).map(file => {
-            return {...file, isFolder: false, selected: false}
-        }))
+
+        try {
+            setFolders((await readFolders(folderId)).map(folder => {
+                return {...folder, isFolder: true, selected: false}
+            }))
+            setFiles((await readFiles(folderId)).map(file => {
+                return {...file, isFolder: false, selected: false}
+            }))
+        } catch(e) {
+            setToast({
+                opened: true,
+                message: 'Unable to load your files'
+            })
+        }
     }
 
     const handleChangeDirectory = async folderPk => {
@@ -55,7 +68,14 @@ export default function Home() {
     }
 
     const handleUpload = async event => {
-        await createFile(event.target.files[0], getCurrentFoderId() || '')
+        try {
+            await createFile(event.target.files[0], getCurrentFoderId() || '')
+        } catch(e) {
+            setToast({
+                opened: true,
+                message: 'Unable to upload this file'
+            })
+        }
         loadResources()
     }
 
@@ -63,88 +83,114 @@ export default function Home() {
         const selectedFolders = getSelectedResources(folders)
         const selectedFiles = getSelectedResources(files)
 
-        if (selectedFolders.length && selectedFiles.length) {
-            await downloadResources(
-                selectedFolders.map(folder => folder.id),
-                selectedFiles.map(file => file.id),
-            )
-        } else if (selectedFolders.length) {
-            if (selectedFolders.length === 1) {
-                await downloadFolder(selectedFolders[0].id)
-            } else {
-                await downloadFolders(selectedFolders.map(folder => folder.id))
-            }
-        } else if (selectedFiles.length) {
-            if (selectedFiles.length === 1) {
-                await downloadFile(selectedFiles[0].id)
-            } else {
-                await downloadFiles(
+        try {
+            if (selectedFolders.length && selectedFiles.length) {
+                await downloadResources(
+                    selectedFolders.map(folder => folder.id),
                     selectedFiles.map(file => file.id),
                 )
+            } else if (selectedFolders.length) {
+                if (selectedFolders.length === 1) {
+                    await downloadFolder(selectedFolders[0].id)
+                } else {
+                    await downloadFolders(selectedFolders.map(folder => folder.id))
+                }
+            } else if (selectedFiles.length) {
+                if (selectedFiles.length === 1) {
+                    await downloadFile(selectedFiles[0].id)
+                } else {
+                    await downloadFiles(
+                        selectedFiles.map(file => file.id),
+                    )
+                }
             }
+        } catch(e) {
+            setToast({
+                opened: true,
+                message: 'Unable to download resources'
+            })
         }
     }
 
     const handleNewFolder = async () => {
-        setDialog({
-            opened: true,
-            title: 'Create a new folder',
-            label: 'Folder name',
-            hint: 'Type a folder name',
-            defaultValue: '',
-            onSubmit: async name => {
-                await createFolder(name, getCurrentFoderId())
-                await loadResources()
-                setDialog({...dialog, opened: false})
-            },
-            onCancel: () => setDialog({...dialog, opened: false})
-        })
+        try {
+            setDialog({
+                opened: true,
+                title: 'Create a new folder',
+                label: 'Folder name',
+                hint: 'Type a folder name',
+                defaultValue: '',
+                onSubmit: async name => {
+                    await createFolder(name, getCurrentFoderId())
+                    await loadResources()
+                    setDialog({...dialog, opened: false})
+                },
+                onCancel: () => setDialog({...dialog, opened: false})
+            })
+        } catch(e) {
+            setToast({
+                opened: true,
+                message: 'Unable to create a new folder'
+            })
+        }
     }
 
     const handleRename = async () => {
         const selectedFolders = getSelectedResources(folders)
         const selectedFiles = getSelectedResources(files)
 
-        if (selectedFolders.length + selectedFiles.length === 1) {
-            if (selectedFolders.length) {
-                setDialog({
-                    opened: true,
-                    title: 'Rename a folder',
-                    label: 'Folder name',
-                    hint: 'Type a new folder name',
-                    defaultValue: '',
-                    onSubmit: async name => {
-                        await updateFolder(
-                            selectedFolders[0].id,
-                            name,
-                            selectedFolders[0].deleted,
-                            getCurrentFoderId(),
-                        )
-                        await loadResources()
-                        setDialog({...dialog, opened: false})
-                    },
-                    onCancel: () => setDialog({...dialog, opened: false})
-                })
+        try {
+            if (selectedFolders.length + selectedFiles.length === 1) {
+                if (selectedFolders.length) {
+                    setDialog({
+                        opened: true,
+                        title: 'Rename a folder',
+                        label: 'Folder name',
+                        hint: 'Type a new folder name',
+                        defaultValue: '',
+                        onSubmit: async name => {
+                            await updateFolder(
+                                selectedFolders[0].id,
+                                name,
+                                selectedFolders[0].deleted,
+                                getCurrentFoderId(),
+                            )
+                            await loadResources()
+                            setDialog({...dialog, opened: false})
+                        },
+                        onCancel: () => setDialog({...dialog, opened: false})
+                    })
+                } else {
+                    setDialog({
+                        opened: true,
+                        title: 'Rename a file',
+                        label: 'File name',
+                        hint: 'Type a new file name',
+                        defaultValue: '',
+                        onSubmit: async name => {
+                            await updateFile(
+                                selectedFiles[0].id,
+                                name,
+                                selectedFiles[0].deleted,
+                                getCurrentFoderId(),
+                            )
+                            await loadResources()
+                            setDialog({...dialog, opened: false})
+                        },
+                        onCancel: () => setDialog({...dialog, opened: false})
+                    })
+                }
             } else {
-                setDialog({
+                setToast({
                     opened: true,
-                    title: 'Rename a file',
-                    label: 'File name',
-                    hint: 'Type a new file name',
-                    defaultValue: '',
-                    onSubmit: async name => {
-                        await updateFile(
-                            selectedFiles[0].id,
-                            name,
-                            selectedFiles[0].deleted,
-                            getCurrentFoderId(),
-                        )
-                        await loadResources()
-                        setDialog({...dialog, opened: false})
-                    },
-                    onCancel: () => setDialog({...dialog, opened: false})
+                    message: 'You can only rename one resource at a time'
                 })
             }
+        } catch(e) {
+            setToast({
+                opened: true,
+                message: 'Unable to rename this resource'
+            })
         }
     }
 
@@ -155,21 +201,32 @@ export default function Home() {
             folders: selectedFolders,
             files: selectedFiles,
         })
+        setToast({
+            opened: true,
+            message: 'Resources cut'
+        })
     }
 
     const handlePaste = async () => {
-        clipboard.folders.forEach(async folder => await updateFolder(
-            folder.id,
-            folder.name,
-            folder.deleted,
-            getCurrentFoderId(),
-        ))
-        clipboard.files.forEach(async file => await updateFile(
-            file.id,
-            file.name,
-            file.deleted,
-            getCurrentFoderId(),
-        ))
+        try {
+            clipboard.folders.forEach(async folder => await updateFolder(
+                folder.id,
+                folder.name,
+                folder.deleted,
+                getCurrentFoderId(),
+            ))
+            clipboard.files.forEach(async file => await updateFile(
+                file.id,
+                file.name,
+                file.deleted,
+                getCurrentFoderId(),
+            ))
+        } catch(e) {
+            setToast({
+                opened: true,
+                message: 'Unable to move these resources'
+            })
+        }
         await loadResources()
     }
 
@@ -177,8 +234,15 @@ export default function Home() {
         const selectedFolders = getSelectedResources(folders)
         const selectedFiles = getSelectedResources(files)
 
-        selectedFolders.forEach(async folder => await deleteFolder(folder.id))
-        selectedFiles.forEach(async file => await deleteFile(file.id))
+        try {
+            selectedFolders.forEach(async folder => await deleteFolder(folder.id))
+            selectedFiles.forEach(async file => await deleteFile(file.id))
+        } catch(e) {
+            setToast({
+                opened: true,
+                message: 'Unable to delete theses resources'
+            })
+        }
         
         setFolders(getSelectedResources(folders, false))
         setFiles(getSelectedResources(files, false))
@@ -222,6 +286,10 @@ export default function Home() {
                     onSubmit={dialog.onSubmit}
                     onCancel={dialog.onCancel}
                 />
+            :   React.null
+            }
+            {toast.opened
+            ?   <Toast message={toast.message} onDestroy={() => setToast({...toast, opened: false})} />
             :   React.null
             }
         </div>
