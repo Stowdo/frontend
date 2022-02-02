@@ -36,11 +36,16 @@ export default function Home() {
         onCancel: () => {}
     })
 
+    const getCurrentFoderId = () => {
+        return currentFolder?.id
+    }
+
     const loadResources = async () => {
-        setFolders((await readFolders(currentFolder)).map(folder => {
+        const folderId = getCurrentFoderId()
+        setFolders((await readFolders(folderId)).map(folder => {
             return {...folder, isFolder: true, selected: false}
         }))
-        setFiles((await readFiles(currentFolder)).map(file => {
+        setFiles((await readFiles(folderId)).map(file => {
             return {...file, isFolder: false, selected: false}
         }))
     }
@@ -50,7 +55,7 @@ export default function Home() {
     }
 
     const handleUpload = async event => {
-        await createFile(event.target.files[0], currentFolder || '')
+        await createFile(event.target.files[0], getCurrentFoderId() || '')
         loadResources()
     }
 
@@ -88,7 +93,7 @@ export default function Home() {
             hint: 'Type a folder name',
             defaultValue: '',
             onSubmit: async name => {
-                await createFolder(name, currentFolder)
+                await createFolder(name, getCurrentFoderId())
                 await loadResources()
                 setDialog({...dialog, opened: false})
             },
@@ -113,7 +118,7 @@ export default function Home() {
                             selectedFolders[0].id,
                             name,
                             selectedFolders[0].deleted,
-                            currentFolder
+                            getCurrentFoderId(),
                         )
                         await loadResources()
                         setDialog({...dialog, opened: false})
@@ -132,7 +137,7 @@ export default function Home() {
                             selectedFiles[0].id,
                             name,
                             selectedFiles[0].deleted,
-                            currentFolder
+                            getCurrentFoderId(),
                         )
                         await loadResources()
                         setDialog({...dialog, opened: false})
@@ -143,7 +148,7 @@ export default function Home() {
         }
     }
 
-    const handleCopy = async () => {
+    const handleCut = async () => {
         const selectedFolders = getSelectedResources(folders)
         const selectedFiles = getSelectedResources(files)
         setClipboard({
@@ -157,14 +162,15 @@ export default function Home() {
             folder.id,
             folder.name,
             folder.deleted,
-            currentFolder
+            getCurrentFoderId(),
         ))
         clipboard.files.forEach(async file => await updateFile(
             file.id,
             file.name,
             file.deleted,
-            currentFolder
+            getCurrentFoderId(),
         ))
+        await loadResources()
     }
 
     const handleDelete = async () => {
@@ -182,7 +188,7 @@ export default function Home() {
         onDownload: handleDownload,
         onNewFolder: handleNewFolder,
         onRename: handleRename,
-        onCopy: handleCopy,
+        onCut: handleCut,
         onPaste: handlePaste,
         onDelete: handleDelete
     }
@@ -199,7 +205,7 @@ export default function Home() {
                 withSettings={true}
                 disabled={dialog.opened}
             />
-            <FileTree />
+            <FileTree currentFolder={currentFolder} />
             <FileList
                 folders={folders}
                 files={files}

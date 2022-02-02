@@ -32,7 +32,7 @@ export async function updateFile(id, name, deleted, parent_folder) {
         deleted: deleted,
         parent_folder: parent_folder
     }
-    return await updateEndpoint(url, 'put', body)
+    return await updateEndpoint(url, 'patch', body)
 }
 
 export async function deleteFile(id) {

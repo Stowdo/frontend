@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { ReactComponent as CopyIcon } from '../shapes/copy.svg'
+import { ReactComponent as CutIcon } from '../shapes/cut.svg'
 import { ReactComponent as PasteIcon } from '../shapes/paste.svg'
 import { ReactComponent as DownloadIcon } from '../shapes/download.svg'
 import { ReactComponent as DeleteIcon } from '../shapes/delete.svg'
@@ -14,7 +14,7 @@ function ActionBar({
     onDownload,
     onNewFolder,
     onRename,
-    onCopy,
+    onCut,
     onPaste,
     onDelete,
     disabled=false
@@ -24,7 +24,7 @@ function ActionBar({
             <DownloadIcon className='ActionBar__icon' title='Download' onClick={() => {disabled || onDownload()}} />
             <NewFolderIcon className='ActionBar__icon' title='New folder' onClick={() => {disabled || onNewFolder()}} />
             <RenameIcon className='ActionBar__icon' title='Rename' onClick={() => {disabled || onRename()}} />
-            <CopyIcon className='ActionBar__icon' title='Copy' onClick={() => {disabled || onCopy()}} />
+            <CutIcon className='ActionBar__icon' title='Cut' onClick={() => {disabled || onCut()}} />
             <PasteIcon className='ActionBar__icon' title='Paste' onClick={() => {disabled || onPaste()}} />
             <DeleteIcon className='ActionBar__icon' title='Delete' onClick={() => {disabled || onDelete()}} />
         </div>

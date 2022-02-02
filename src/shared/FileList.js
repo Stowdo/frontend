@@ -17,8 +17,8 @@ export default function FileList({ files, folders, onChangeDirectory, currentFol
         file.selected = selected
     }
 
-    const handleOpen = id => {
-        onChangeDirectory(id)
+    const handleOpen = folder => {
+        onChangeDirectory(folder)
     }
 
     return (
@@ -26,7 +26,7 @@ export default function FileList({ files, folders, onChangeDirectory, currentFol
             <table className='FileList__inner'>
                 <tbody>
                     {currentFolder
-                    ?   <FileListParentItem onOpen={() => handleOpen(currentFolder.id)} />
+                    ?   <FileListParentItem onOpen={() => handleOpen(currentFolder.parent_folder)} />
                     :   React.null
                     }
                     {folders.map(folder => 
@@ -37,7 +37,7 @@ export default function FileList({ files, folders, onChangeDirectory, currentFol
                             date={folder.creation_date}
                             isFolder={true}
                             onSelect={selected => handleSelectFolder(folder.id, selected)}
-                            onOpen={() => handleOpen(folder.id)}
+                            onOpen={() => handleOpen(folder)}
                         />
                     )}
                     {files.map(file => 
