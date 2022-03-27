@@ -1,20 +1,20 @@
 import axios from 'axios'
 import Cookies from 'js-cookie'
 
-const api_protocol = process.env.REACT_APP_STOWDO_API_PROTOCOL
-const api_host = process.env.REACT_APP_STOWDO_API_HOST
-const api_port = process.env.REACT_APP_STOWDO_API_PORT
-export const api_url = `${api_protocol}://${api_host}:${api_port}`
+const apiProtocol = process.env.REACT_APP_STOWDO_API_PROTOCOL
+const apiHost = process.env.REACT_APP_STOWDO_API_HOST
+const apiPort = process.env.REACT_APP_STOWDO_API_PORT
+export const apiUrl = `${apiProtocol}://${apiHost}:${apiPort}`
 
 
 export function hashCode(s) {
-    for(var i = 0, h = 0; i < s.length; i++)
+    for (var i = 0, h = 0; i < s.length; i++)
         h = Math.imul(31, h) + s.charCodeAt(i) | 0;
     return h;
 }
 
 // string format
-export function humanFileSize(bytes, si=true, dp=1) {
+export function humanFileSize(bytes, si = true, dp = 1) {
     const thresh = si ? 1000 : 1024;
 
     if (Math.abs(bytes) < thresh) {
@@ -22,11 +22,11 @@ export function humanFileSize(bytes, si=true, dp=1) {
     }
 
     const units = si
-    ?   ['kB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'] 
-    :   ['KiB', 'MiB', 'GiB', 'TiB', 'PiB', 'EiB', 'ZiB', 'YiB'];
+        ? ['kB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB']
+        : ['KiB', 'MiB', 'GiB', 'TiB', 'PiB', 'EiB', 'ZiB', 'YiB'];
     let u = -1;
-    const r = 10**dp;
-  
+    const r = 10 ** dp;
+
     do {
         bytes /= thresh;
         ++u;
@@ -86,7 +86,7 @@ export async function downloadEndpoint(url, method, body) {
         responseType: 'blob',
         withCredentials: true
     }
-    
+
     if (['post', 'put', 'patch', 'delete'].includes(method)) {
         request.headers = {
             'X-CSRFToken': Cookies.get('csrftoken')
@@ -99,8 +99,7 @@ export async function downloadEndpoint(url, method, body) {
             const [key, value] = disposition.split('=')
             obj[key] = (typeof value === 'string' ? value.replace(/['"]+/g, '') : value)
             return obj
-        },
-        {})
+        }, {})
     const filename = dispositions['filename']
     const downloadUrl = window.URL.createObjectURL(new Blob([response.data]))
     const link = document.createElement('a')

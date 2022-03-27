@@ -1,13 +1,13 @@
-import { api_url, getEndpoint, updateEndpoint } from '../utils'
+import { apiUrl, getEndpoint, updateEndpoint } from '../utils'
 
 
 export async function readUser(id) {
-    const url = api_url + `/users/${id}/`
+    const url = apiUrl + `/users/${id}/`
     return await getEndpoint(url)
 }
 
 export async function updateUser(id, username, email, firstname, lastname) {
-    const url = api_url + `/users/${id}/`
+    const url = apiUrl + `/users/${id}/`
     let body = {
         username: username,
         email: email,
@@ -18,6 +18,6 @@ export async function updateUser(id, username, email, firstname, lastname) {
 }
 
 export async function deleteUser(id) {
-    const url = api_url + `/users/${id}/`
+    const url = apiUrl + `/users/${id}/`
     return await updateEndpoint(url, 'delete', {})
 }
