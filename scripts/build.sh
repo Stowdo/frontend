@@ -11,10 +11,6 @@ set -a
 . .env
 set +a
 
-echop 'Building react app...'
-npm run build
-echop 'Done'
-
 echop 'Building image...'
 docker build -t redbeandock/stowdo-frontend:"${REACT_APP_STOWDO_VERSION}" .
 echop 'Done'
